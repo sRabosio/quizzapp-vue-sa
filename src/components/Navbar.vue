@@ -1,9 +1,12 @@
 <template>
-    <nav style="justify-content: center; border-bottom: 1px solid #dedede;">
+    <nav style="border-bottom: 1px solid #dedede; padding:32px; width: 100%;">
         <ul>
             <li>
                 <strong>{{title}}</strong>
             </li>
+        </ul>
+        <ul>
+            <li role="button" :onClick="onRestartButton" > {{ restartText }} </li>
         </ul>
     </nav>
 </template>
@@ -12,8 +15,12 @@
         name: "Navbar",
         data(){
             return{
-                title:"SA QUIZZ"
+                title:"SA QUIZZ",
+                restartText:"Restart"
             }
+        },
+        props: {
+            onRestartButton: Function
         }
     }
 </script>

@@ -1,8 +1,8 @@
 
 <template>
     <div>
-        <h1>{{ score }}/{{ finalResult.length }}</h1>
-        <container v-for="res in finalResult" :key="res.quizz.question">
+        <h1>{{ score }}/{{ quizzResult.length }}</h1>
+        <container v-for="res in quizzResult" :key="res.quizz.question">
             <h3>{{res.quizz.question}}</h3>
             <p v-for="(opt, index) in res.quizz.options" :key="index">
                 {{ opt }}
@@ -17,18 +17,20 @@
 <script> 
 import {quizzResult} from '../atoms'
 
+console.log({quizzResult})
+
 export default {
     computed:{
-        finalResult(){
-            return quizzResult.value
-        },
         score(){
             let result = 0
-            this.finalResult.forEach(q=>{
+            quizzResult.value.forEach(q=>{
                 console.log({a:q.quizz.answer, ua: q.userAnswer})
                 if(q.quizz.answer === q.userAnswer) result++
             })
             return result
+        },
+        quizzResult(){
+            return quizzResult.value
         }
     }
 }
