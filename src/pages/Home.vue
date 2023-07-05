@@ -39,7 +39,6 @@
     beforeMount(){
       getQuizz('test').then(r=>{
         this.questionList = r
-        console.log(r)
       })
     },
     components:{
@@ -76,7 +75,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow-y: scroll;
+    overflow-y: auto;
     height: 100%;
   }
 

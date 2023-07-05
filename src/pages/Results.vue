@@ -17,14 +17,12 @@
 <script> 
 import {quizzResult} from '../atoms'
 
-console.log({quizzResult})
 
 export default {
     computed:{
         score(){
             let result = 0
             quizzResult.value.forEach(q=>{
-                console.log({a:q.quizz.answer, ua: q.userAnswer})
                 if(q.quizz.answer === q.userAnswer) result++
             })
             return result

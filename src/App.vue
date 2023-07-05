@@ -3,7 +3,7 @@
     <header>
       <Navbar :on-restart-button="onRestartButton" />
     </header>
-    <main style="overflow:scroll;">
+    <main style="overflow:hidden;">
       <Home :question-index="questionIndex" :after-form-submit="afterFormSubmit"/>
     </main>
   </div>
