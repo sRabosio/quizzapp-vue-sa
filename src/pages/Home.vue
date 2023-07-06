@@ -4,7 +4,7 @@
       <h2 >Sa quizz</h2>
       <button :onClick="startClick">Start</button>
     </div>
-    <div v-if="!isQuizzFinished && isStarted" id="questionForm" :class="formClass">
+    <div v-if="!isQuizzFinished && isStarted" id="questionForm" :class="formClass" style="padding: 8px;">
       <form v-if="currentQuestion" v-on:submit.prevent="onFormSubmit" style="display: flex; flex-direction: column; gap: 12px;">
         <p style="margin: 0">question {{ questionIndex+1 }}: {{ currentQuestion.question }}</p>
         <div style="display: contents;">
@@ -106,11 +106,13 @@
     opacity: 0;
   }
   
-  
+
   .option{
     display: flex;
     flex-direction: row;
+    gap:5px;
   }
+
   #start{
     transition: transform linear 1s; 
   }

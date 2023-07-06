@@ -50,4 +50,7 @@ export default {
     height: 100%;
     overflow: hidden;
   }
+  main{
+    margin: 32px;
+  }
 </style>
