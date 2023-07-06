@@ -1,10 +1,10 @@
 <template>
   <div id="Home">
-    <div id="start">
-      <h2 :class="isStarted && 'flyToTop'">Sa quizz</h2>
-      <button :class="isStarted && 'flyToBottom'" :onClick="startClick">Start</button>
+    <div id="start" :class="isStarted && 'flyToTop'" v-if="!isQuizzFinished">
+      <h2 >Sa quizz</h2>
+      <button :onClick="startClick">Start</button>
     </div>
-    <div v-if="!isQuizzFinished && isStarted" id="questionForm" :class="formClass">
+    <div v-if="!isQuizzFinished && isStarted" id="questionForm" :class="formClass" style="padding: 8px;">
       <form v-if="currentQuestion" v-on:submit.prevent="onFormSubmit" style="display: flex; flex-direction: column; gap: 12px;">
         <p style="margin: 0">question {{ questionIndex+1 }}: {{ currentQuestion.question }}</p>
         <div style="display: contents;">
@@ -51,7 +51,7 @@
       isStarted(val){
         if(val) setTimeout(()=>{
           this.formClass = 'showQuestionForm'
-        }, 1000)
+        }, 150)
         else this.formClass = 'hideQuestionForm'
       }
     },
@@ -106,21 +106,18 @@
     opacity: 0;
   }
   
-  
+
   .option{
     display: flex;
     flex-direction: row;
+    gap:5px;
   }
-  #start *{
+
+  #start{
     transition: transform linear 1s; 
   }
   .flyToTop{
-    transition: transform linear 1s;
+    transition: transform ease-in-out 0.5s;
     transform: translateY(-100vh);
-  }
-  .flyToBottom{
-    position: relative;
-    transition: transform linear 1s;
-    transform: translateY(100vh);
   }
 </style>
