@@ -4,7 +4,7 @@
       <Navbar :on-restart-button="onRestartButton" />
     </header>
     <main style="overflow:hidden;">
-      <Home :question-index="questionIndex" :after-form-submit="afterFormSubmit"/>
+      <Home :question-index="questionIndex" :after-form-submit="afterFormSubmit" :isStarted="isQuizzStarted" :onStartClick="onStartClick"/>
     </main>
   </div>
 </template>
@@ -20,7 +20,8 @@ export default {
   name: 'App',
   data(){
     return {
-      questionIndex: 0
+      questionIndex: 0,
+      isQuizzStarted: false
     }
   },
   components:{
@@ -31,9 +32,13 @@ export default {
     onRestartButton(){
       quizzResult.value = []
       this.questionIndex = 0
+      this.isQuizzStarted = false
     },
     afterFormSubmit(){
       this.questionIndex++
+    },
+    onStartClick(){
+      this.isQuizzStarted =  true;
     }
   }
 }

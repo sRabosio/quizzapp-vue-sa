@@ -1,7 +1,10 @@
 <template>
   <div id="Home">
-    <div v-if="!isQuizzFinished">
-      <p>aaa</p>
+    <div id="start">
+      <h2 :class="isStarted && 'flyToTop'">Sa quizz</h2>
+      <button :class="isStarted && 'flyToBottom'" :onClick="startClick">Start</button>
+    </div>
+    <div v-if="!isQuizzFinished && isStarted" id="questionForm" :class="formClass">
       <form v-if="currentQuestion" v-on:submit.prevent="onFormSubmit" style="display: flex; flex-direction: column; gap: 12px;">
         <p style="margin: 0">question {{ questionIndex+1 }}: {{ currentQuestion.question }}</p>
         <div style="display: contents;">
@@ -13,7 +16,7 @@
       </div>
       </form>
     </div>
-    <Results v-else/>
+    <Results v-else-if="isStarted"/>
   </div>
 </template>
 
@@ -21,6 +24,7 @@
   import Results from "./Results.vue"
   import {quizzResult} from '../atoms'
   import {getQuizz} from '../firebase'
+
   export default {
     name:"Home",
     
@@ -29,17 +33,27 @@
         questionList: null,
         submitButtonText: "Avanti",
         selected: -1,
-       
+        formClass: 'hideQuestionForm'
       }
     },
     props:{
       questionIndex: Number,
-      afterFormSubmit: Function
+      afterFormSubmit: Function,
+      onStartClick: Function,
+      isStarted: Boolean
     },
-    beforeMount(){
+    beforeCreate(){
       getQuizz('test').then(r=>{
         this.questionList = r
       })
+    },
+    watch:{
+      isStarted(val){
+        if(val) setTimeout(()=>{
+          this.formClass = 'showQuestionForm'
+        }, 1000)
+        else this.formClass = 'hideQuestionForm'
+      }
     },
     components:{
       Results
@@ -65,6 +79,10 @@
           userAnswer: this.selected
         })
         this.afterFormSubmit()
+       },
+       startClick(){
+        if(this.isStarted) return
+        this.onStartClick()
        }
     },
   }
@@ -79,8 +97,30 @@
     height: 100%;
   }
 
+  .showQuestionForm{
+    transition: opacity ease-in-out 1s;
+    opacity: 1;
+  }
+  .hideQuestionForm{
+    transition: opacity ease-in-out 1s;
+    opacity: 0;
+  }
+  
+  
   .option{
     display: flex;
     flex-direction: row;
+  }
+  #start *{
+    transition: transform linear 1s; 
+  }
+  .flyToTop{
+    transition: transform linear 1s;
+    transform: translateY(-100vh);
+  }
+  .flyToBottom{
+    position: relative;
+    transition: transform linear 1s;
+    transform: translateY(100vh);
   }
 </style>
