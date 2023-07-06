@@ -13,7 +13,7 @@ const firebaseApp = initializeApp({
 const db = getFirestore(firebaseApp)
 
 export const getQuizz = async (quizzId)=>{
-    const snapshot = await getDocs(collection(db, `quizzes/${quizzId}/quizList`))
+    const snapshot = await getDocs(collection(db, `quizzes/${quizzId}/quizzList`))
     const result = []
     snapshot.forEach(d=>{
         if(d.data())

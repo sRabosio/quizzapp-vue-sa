@@ -43,7 +43,7 @@
       isStarted: Boolean
     },
     beforeCreate(){
-      getQuizz('test').then(r=>{
+      getQuizz('saQuizz').then(r=>{
         this.questionList = r
       })
     },
