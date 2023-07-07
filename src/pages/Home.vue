@@ -4,15 +4,15 @@
       <h2 >Sa quizz</h2>
       <button :onClick="startClick">Start</button>
     </div>
-    <div v-if="!isQuizzFinished && isStarted" id="questionForm" :class="formClass" style="padding: 8px;  width: 90%;">
-      <form v-if="currentQuestion" v-on:submit.prevent="onFormSubmit" style="display: flex; flex-direction: column; gap: 12px;">
-        <p style="margin: 0">question {{ questionIndex+1 }}: {{ currentQuestion.question }}</p>
-        <div style="display: contents;">
-          <div v-for="(opt, index) in currentQuestion.options" :key="index" class="option">
+    <div v-if="!isQuizzFinished && isStarted" id="questionForm" :class="formClass" style="padding: 8px;  width: 90%; padding-left: auto; padding-right: auto;">
+      <form v-if="currentQuestion" v-on:submit.prevent="onFormSubmit" style="display: flex; flex-direction: column; gap: 12px; ">
+        <p class="centerWithMargin">question {{ questionIndex+1 }}: {{ currentQuestion.question }}</p>
+        <div style="display: flex; flex-direction: column; gap: 12px; margin-left: auto; margin-right: auto;" >
+          <div v-for="(opt, index) in currentQuestion.options" :key="index" class="option"> 
           <input type="radio" name="opt-radio" :value="index" v-model="selected" >
           <label>{{ opt }}</label>
         </div>
-        <button type="submit" style="padding: 0.5rem;">{{ submitButtonText }}</button>
+        <button type="submit" style="padding: 0.5rem; max-width: 300px" class="centerWithMargin">{{ submitButtonText }}</button>
       </div>
       </form>
     </div>
@@ -101,6 +101,11 @@
     align-items: center;
     overflow-y: auto;
     height: 100%;
+  }
+
+  .centerWithMargin{
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .showQuestionForm{
