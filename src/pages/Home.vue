@@ -4,7 +4,7 @@
       <h2 >Sa quizz</h2>
       <button :onClick="startClick">Start</button>
     </div>
-    <div v-if="!isQuizzFinished && isStarted" id="questionForm" :class="formClass" style="padding: 8px;">
+    <div v-if="!isQuizzFinished && isStarted" id="questionForm" :class="formClass" style="padding: 8px;  width: 90%;">
       <form v-if="currentQuestion" v-on:submit.prevent="onFormSubmit" style="display: flex; flex-direction: column; gap: 12px;">
         <p style="margin: 0">question {{ questionIndex+1 }}: {{ currentQuestion.question }}</p>
         <div style="display: contents;">
@@ -74,6 +74,12 @@
           alert("Devi selezionare un'opzione valida ")
           return
         }
+
+        Object.values(e.target).forEach(e=>{
+          if(e.checked === undefined) return
+          e.checked = false
+        })
+
         quizzResult.value.push({
           quizz: this.currentQuestion,
           userAnswer: this.selected
