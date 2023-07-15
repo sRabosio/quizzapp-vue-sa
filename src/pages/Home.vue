@@ -83,12 +83,10 @@
           alert("Devi selezionare un'opzione valida ")
           return
         }
-
         Object.values(e.target).forEach(e=>{
-          if(e.checked === undefined) return
-          e.checked = false
+          e.checked = undefined
         })
-
+        this.selected = -1
         quizzResult.value.push({
           quizz: this.currentQuestion,
           userAnswer: this.selected
