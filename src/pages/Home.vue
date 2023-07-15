@@ -1,11 +1,18 @@
 <template>
   <div id="Home">
     <div id="start" :class="isStarted && 'flyToTop'" v-if="!isQuizzFinished">
-      <h2 >Sa quizz</h2>
-      <button :onClick="startClick">Start</button>
+      <h3>Select your quizz</h3>
+      <form v-on:submit.prevent="onQuizzSubmit">
+        <select name="selectQuizz" id="selectQuizz" :disabled="isStarted" required >
+          <option></option>
+          <option v-if="quizzList" v-for="quizz in quizzList" :value="quizz">{{ quizz }}</option>
+          <option value="all">All</option>
+        </select>
+        <button type="submit" :disabled="isStarted">Start</button>
+      </form>
     </div>
     <div v-if="!isQuizzFinished && isStarted" id="questionForm" :class="formClass" style="padding: 8px;  width: 90%; padding-left: auto; padding-right: auto;">
-      <form v-if="currentQuestion" v-on:submit.prevent="onFormSubmit" style="display: flex; flex-direction: column; gap: 12px; ">
+      <form v-if="currentQuestion" v-on:submit.prevent="onAnswerSubmit" style="display: flex; flex-direction: column; gap: 12px; ">
         <p class="centerWithMargin">question {{ questionIndex+1 }}: {{ currentQuestion.question }}</p>
         <div style="display: flex; flex-direction: column; gap: 12px; margin-left: auto; margin-right: auto;" >
           <div v-for="(opt, index) in currentQuestion.options" :key="index" class="option"> 
@@ -23,7 +30,7 @@
 <script>
   import Results from "./Results.vue"
   import {quizzResult} from '../atoms'
-  import {getQuizz} from '../firebase'
+  import {getQuizz, getQuizzIds} from '../firebase'
 
   export default {
     name:"Home",
@@ -33,7 +40,8 @@
         questionList: null,
         submitButtonText: "Avanti",
         selected: -1,
-        formClass: 'hideQuestionForm'
+        formClass: 'hideQuestionForm',
+        quizzList: null
       }
     },
     props:{
@@ -43,9 +51,10 @@
       isStarted: Boolean
     },
     beforeCreate(){
-      getQuizz('saQuizz').then(r=>{
-        this.questionList = r
-      })
+      // getQuizz('saQuizz').then(r=>{
+      //   this.questionList = r
+      // })
+      getQuizzIds().then(r=>this.quizzList = r)
     },
     watch:{
       isStarted(val){
@@ -69,7 +78,7 @@
         }
     },
     methods:{
-       onFormSubmit(e){
+       onAnswerSubmit(e){
         if(this.selected < 0 || this.selected>this.currentQuestion.options.length-1){
           alert("Devi selezionare un'opzione valida ")
           return
@@ -86,10 +95,34 @@
         })
         this.afterFormSubmit()
        },
+
        startClick(){
         if(this.isStarted) return
         this.onStartClick()
-       }
+       },
+
+       onQuizzSubmit(e){
+          const value = e.target.selectQuizz.value
+          if(!value || !this.quizzList) return
+          if(value !== "all"){
+            getQuizz(value).then(r=>{
+              this.questionList = r
+              this.startClick()
+            })
+            return
+          }
+          const prList = [];
+
+          this.quizzList.forEach(q=>{
+            prList.push(getQuizz(q))
+          })
+          Promise.all(prList)
+            .then(resultList=>{
+              this.questionList = []
+              resultList.forEach(quizz=>this.questionList.push(...quizz))
+              this.startClick()
+            })
+        },
     },
   }
 </script>

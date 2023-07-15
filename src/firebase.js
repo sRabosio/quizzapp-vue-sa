@@ -21,3 +21,10 @@ export const getQuizz = async (quizzId)=>{
     })
     return result
 }
+
+export const getQuizzIds = async ()=>{
+    const result = []
+    const snapshot = await getDocs(collection(db, 'quizzes'))
+    snapshot.forEach(d=>result.push(d.id))
+    return result
+}

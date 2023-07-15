@@ -15,7 +15,6 @@ import Home from './pages/Home.vue'
 import Navbar from './components/Navbar.vue'
 import {quizzResult} from './atoms'
 
-
 export default {
   name: 'App',
   data(){
