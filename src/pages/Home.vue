@@ -51,9 +51,6 @@
       isStarted: Boolean
     },
     beforeCreate(){
-      // getQuizz('saQuizz').then(r=>{
-      //   this.questionList = r
-      // })
       getQuizzIds().then(r=>this.quizzList = r)
     },
     watch:{
@@ -86,12 +83,13 @@
         Object.values(e.target).forEach(e=>{
           e.checked = undefined
         })
-        this.selected = -1
+        
         quizzResult.value.push({
           quizz: this.currentQuestion,
           userAnswer: this.selected
         })
         this.afterFormSubmit()
+        this.selected = -1
        },
 
        startClick(){
