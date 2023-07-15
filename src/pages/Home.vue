@@ -31,6 +31,7 @@
   import Results from "./Results.vue"
   import {quizzResult} from '../atoms'
   import {getQuizz, getQuizzIds} from '../firebase'
+  import shuffleArray from '../utils/shuffleArray'
 
   export default {
     name:"Home",
@@ -99,10 +100,12 @@
 
        onQuizzSubmit(e){
           const value = e.target.selectQuizz.value
+          e.target.selectQuizz.value = undefined
           if(!value || !this.quizzList) return
           if(value !== "all"){
             getQuizz(value).then(r=>{
               this.questionList = r
+              this.questionList = shuffleArray(this.questionList)
               this.startClick()
             })
             return
@@ -116,6 +119,7 @@
             .then(resultList=>{
               this.questionList = []
               resultList.forEach(quizz=>this.questionList.push(...quizz))
+              this.questionList = shuffleArray(this.questionList)
               this.startClick()
             })
         },
